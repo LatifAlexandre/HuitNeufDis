@@ -11,18 +11,16 @@ model of the bdd
 ## ++products
  
 ### product
-- weight
 - productName
 - stock <-- trigger (if < 5 then endOfStock true from 'system')
-- endOfStock : boolean
-- enOfStockMoreInfos
+- enOfStockMoreInfos : null or
     - date
     - by : name of the prepartor / 'system'
 - position
     - x : 1, 2, 3
     - y : 1, 2, 3
-    - armoire :
-    - casier: 
+    - shelf :
+    - compartments: 
 
 ## ++commands
 
@@ -31,12 +29,12 @@ model of the bdd
 - weight
 - dateOfCreation
 - state : 'waiting' | 'in progress' | 'finished'
-- products []
+++ products []
     - id
-    - productName
-    - position
-    - scanned
-    - number
+        - productName
+        - position
+        - scanned
+        - number
 - preparator :
     - firstname
     - lastname
@@ -44,7 +42,7 @@ model of the bdd
 ## ++commandPrepGroups
 
 ### commandPrepGroup
-    - products [] <-- listed by position
+    ++products <-- listed by position
         - id
         - productName
         - position
