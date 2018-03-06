@@ -14,6 +14,8 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
     
     const maxWeight = Number(request.query.maxWeight);
+    const prepFirstName = request.query.firstname;
+    const prepLastName = request.query.lastname;
     var weight = 0;
     var commandPrepGroup = [];
     
@@ -24,6 +26,8 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
                 var command = doc.data();
                 // it the command if light enough
                 if (command.weight + weight <= maxWeight) {
+                    // we increment the weight
+                    weight += command.weight;
                     // we get all the products of this command
                     admin.firestore().collection("commands").doc(doc.id).collection("products").get()
                         .then( function(querySnapshot) {
@@ -35,10 +39,13 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
                                     position: product.position
                                 });
                             })
-                           
                         })
-                    // we increment the weight
-                    weight += command.weight;
+
+                    // we change the state of the command and its preparator
+                    admin.firestore().collection("commands").doc(doc.id).set({
+                        preparator: { firstname: prepFirstName, lastname: prepLastName},
+                        state: 'in_progress'
+                    })
                 }
             });
 
@@ -49,5 +56,6 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
                 
         });
     
-    //change the state of a command and its preparator
+    
+
 });
