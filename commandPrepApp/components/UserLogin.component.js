@@ -1,6 +1,12 @@
+/** react **/
 import React, {Component} from 'react';
 import {Alert, StyleSheet, View, TextInput, TouchableOpacity, Text, Dimensions, Icon, Keyboard} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+/** data **/
+import productsData from '../data/users.data';
+/** model **/
+import Product from '../model/Product';
+import Position from '../model/Position';
 
 export default class UserLogin extends Component{
 
@@ -52,12 +58,17 @@ export default class UserLogin extends Component{
                     style = {styles.generateCommandPrepGroupButtonStyle}
                     onPress = {
                             () => {
-                                if (this.state.id){
-                                    // Keyboard.dismiss();
-                                    // this.setState({logged: true});
-                                    // this.setState({userName: this.state.id});
-                                    // this.setState({id: ''});
-                                }
+                                this.products = productsData.map(function(prod){
+                                    var position = new Position(prod.position.compartment, prod.position.shelf, prod.position.x, prod.position.y);
+                                    var product = new Product(prod.id, prod.productName, position);
+                                    console.log(product);
+                                    console.log(" ---------- ");
+                                    return product;
+                                });
+                                // Keyboard.dismiss();
+                                // this.setState({logged: true});
+                                // this.setState({userName: this.state.id});
+                                // this.setState({id: ''});
                             }
                     }   
                 >
