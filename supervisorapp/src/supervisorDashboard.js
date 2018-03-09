@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './supervisorDashboard.css';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import Card, { CardContent } from 'material-ui/Card';
 import fire from './fire';
 import Command from './command';
 
@@ -48,9 +48,7 @@ class SupervisorDashboard extends Component {
   }
 
   componentWillMount() {
-
     // we take the commands from firebase
-    
     fire.firestore().collection('commands').onSnapshot(querySnapshot => {
         var commands = {
             'waiting': [],
@@ -64,17 +62,7 @@ class SupervisorDashboard extends Component {
         this.setState({
             commands: commands
         })
-        console.log('reception of the commands')
-        console.log(this.state.commands)
     })
-    /*
-    fire.firestore().collection('commands').doc('1').onSnapshot( command => {
-        var commandWithId = {...command.data(), id: command.id}
-        this.setState({
-            command: commandWithId
-        })
-        // console.log(this.state.command)
-    })*/
  }
 
 

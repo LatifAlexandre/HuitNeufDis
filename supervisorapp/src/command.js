@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import './command.css';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
 import { LinearProgress } from 'material-ui/Progress';
 
 class Command extends Component {
@@ -32,8 +31,6 @@ class Command extends Component {
 
   constructor(props) {
     super(props);
-    console.log(this.props.command)
-    console.log('constructor');
   }
 }
 

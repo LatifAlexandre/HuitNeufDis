@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
-import ReactDOM from 'react-dom';
-import Grid from 'material-ui/Grid';
+// import ReactDOM from 'react-dom';
 
 import './App.css';
 import SupervisorDashboard from './supervisorDashboard';
