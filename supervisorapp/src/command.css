@@ -1,0 +1,15 @@
+.command-box {
+    box-shadow: 0px 0px 5px silver;
+    padding: 10px;
+    margin: 10px;
+    background-color: rgb(235, 255, 194);
+}
+
+h4 {
+    margin-bottom: 5px;
+}
+h5 {
+    color: grey;
+    margin-top: 0px;
+}
+

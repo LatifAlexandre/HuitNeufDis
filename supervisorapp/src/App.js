@@ -13,8 +13,12 @@ class App extends Component {
       <div>
         <Header />
         <div className="container">
-          <SupplierDashboard className="dashboard"/>
-          <SupervisorDashboard className="dashboard"/>
+          <div  className="dashboard">
+            <SupplierDashboard className="dashboard"/>
+          </div>
+          <div  className="dashboard">
+            <SupervisorDashboard className="dashboard"/>
+          </div>
         </div>
       </div>
        

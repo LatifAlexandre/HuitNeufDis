@@ -1,5 +1,4 @@
-.container {
-  margin: 20px auto;
-  width: 90%;
-  max-width: 1000px;
+.dashboard {
+  display: block;
+  margin: 10px;
 }
