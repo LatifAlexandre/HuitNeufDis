@@ -2,7 +2,7 @@
     box-shadow: 0px 0px 5px silver;
     padding: 10px;
     margin: 10px;
-    background-color: rgb(235, 255, 194);
+    background-color: rgb(223, 236, 252);
 }
 
 h4 {
@@ -13,3 +13,23 @@ h5 {
     margin-top: 0px;
 }
 
+.body {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+
+.preparator {
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 100%;
+    min-height: 20px;
+}
+
+.product-prepared {
+    align-self: flex-end;
+    font-style: italic;
+    margin: 7px;
+}

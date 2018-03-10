@@ -2,10 +2,54 @@
     box-shadow: 0px 0px 5px silver;
     padding: 10px;
     margin: 10px;
-    background-color: rgb(253, 178, 178);
+    background-color: rgb(255, 119, 119);
 }
 
 .header{
     display: flex;
     justify-content: space-between;
+}
+
+.date {
+
+}
+
+.date .day-month {
+    font-style: italic;
+    
+    font-size: 0.9em;
+}
+
+.date .hour {
+    font-weight: bold;
+}
+
+.from {
+    color: rgb(65, 1, 1);
+    font-weight: bold;
+}
+
+.body {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 10px;
+}
+
+.body .stock {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.product-name-box {
+    margin-right: 20px;
+}
+
+.product-name {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.product-id {
+    font-style: italic;
+    font-size: 0.8em;
 }

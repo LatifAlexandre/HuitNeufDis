@@ -9,12 +9,10 @@ class SupplierDashboard extends Component {
     return (
         <Card>
             <CardContent>
-                <h3> supplier dashboard </h3>
+                <h3> Produits a réaprovionnser </h3>
 
                 <div className="content">
 
-                    <h4> Produits a réaprovionnser </h4>
- 
                     { this.state && this.state.productsEndStock && this.state.productsEndStock ?
                         this.state.productsEndStock.map( product => {
                             return <Product key={product.id} product={product}/>

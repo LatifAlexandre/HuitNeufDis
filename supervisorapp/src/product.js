@@ -16,16 +16,23 @@ class Product extends Component {
 
           {this.props.product.endOfStockInfo ?
             this.props.product.endOfStockInfo.from == 'system' ?
-            <span className="from"> Alert from the System </span>
-              :  <span className="from"> {'Alert from ' + this.props.product.endOfStockInfo.from} </span>
+            <span className="from"> Notification du système </span>
+              :  <span className="from"> {'Notification de ' + this.props.product.endOfStockInfo.from} </span>
             : 'header is loading...'
           }
         </div>
 
-        <h4> {this.props.product.productName} </h4>
-        <h5> Produit n°{this.props.product.id}</h5>
-
-        <strong> Stock: {this.props.product.stock} </strong>
+        <div className='body'>
+          <div className='product-name-box' > 
+            <div className='product-name'>
+              {this.props.product.productName}
+            </div>
+            <div className='product-id'>
+              Produit n°{this.props.product.id}
+            </div>
+          </div>
+          <div className='stock' > Stock: {this.props.product.stock} </div>
+        </div>
       </div>
     );
   }
@@ -47,7 +54,7 @@ class Product extends Component {
       if (month.length < 2) month = '0' + month;
       if (day.length < 2) day = '0' + day;
 
-      return `${day}/${month} ${hour}:${minute}:${second}`;
+      return <span className='date'><span className='day-month'>{`${day}/${month}`} </span> <span className='hour'> {`${hour}:${minute}:${second}`} </span> </span>;
   }
 }
 
