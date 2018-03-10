@@ -104,26 +104,35 @@ exports.scanProduct = functions.https.onRequest((request, response) => {
     const commandId = request.query.commandId;
     const productId = request.query.productId;
 
-    // put scanned on true in the related product *in the command*
-        admin.firestore().collection('commands').doc(commandId).collection('products').doc(productId).update({
-        scanned: true
+    admin.firestore().collection('commands').doc(commandId).collection('products').doc(productId).get()
+    .then( doc => {
+        if (doc.data().scanned) {
+            response.send(`the product ${productId} in the command ${productId} is already scanned`)
+        } else {
+            // put scanned on true in the related product *in the command*
+            admin.firestore().collection('commands').doc(commandId).collection('products').doc(productId).update({
+                scanned: true
+            })
+        
+            // in the product command, decrement the number of unscanned products
+            admin.firestore().collection('commands').doc(commandId).get().then(doc => {
+                admin.firestore().collection('commands').doc(commandId).update({
+                    numberOfUnscannedProducts: doc.data().numberOfUnscannedProducts - 1
+                })
+            })
+        
+            // decrement the stock of the product in the products collection
+            admin.firestore().collection('products').doc(productId).get().then(doc => {
+                admin.firestore().collection('products').doc(productId).update({
+                    stock: doc.data().stock -1
+                })
+            })
+        
+            response.send('done')
+        }
     })
 
-    // in the product command, decrement the number of unscanned products
-    admin.firestore().collection('commands').doc(commandId).get().then(doc => {
-        admin.firestore().collection('commands').doc(commandId).update({
-            numberOfUnscannedProducts: doc.data().numberOfUnscannedProducts - 1
-        })
-    })
 
-    // decrement the stock of the product in the products collection
-    admin.firestore().collection('products').doc(productId).get().then(doc => {
-        admin.firestore().collection('products').doc(productId).update({
-            stock: doc.data().stock -1
-        })
-    })
-
-    response.send('done')
 });
 
 // ----------------------------- end of stock alert from a preparator ---------------------------
@@ -134,6 +143,7 @@ exports.endOfStockAltert = functions.https.onRequest((request, response) => {
     const lastname = request.query.lastname;
 
     admin.firestore().collection('products').doc(productId).update({
+        endOfStock: true,
         endOfStockInfo: {
             date: new Date(),
             from: firstname + ' ' + lastname
@@ -154,7 +164,7 @@ exports.endOfStockAltert = functions.https.onRequest((request, response) => {
 // ----------------------------------------------------------------------------------------------
 
 
-// ---------------------------- when a prouct stock < 5; the product is en of stock -------------
+// ---------------------------- when a product stock < 5; the product is end of stock -------------
 
 exports.productEndOfStock = functions.firestore
 .document('products/{productId}')
@@ -170,6 +180,7 @@ exports.productEndOfStock = functions.firestore
 
     // Then return a promise of a set operation to update the count
     return event.data.ref.update({
+        endOfStock: true,
         endOfStockInfo: {
             date: new Date(),
             from: 'system'
