@@ -15,7 +15,8 @@ class SupplierDashboard extends Component {
 
                     { this.state && this.state.productsEndStock && this.state.productsEndStock ?
                         this.state.productsEndStock.map( product => {
-                            return <Product key={product.id} product={product}/>
+                            return <Product key={product.id} product={product}
+                                            updateParent={this.newStock}/>
                         })
                         : 'the products are loading...'
                     }
@@ -23,6 +24,15 @@ class SupplierDashboard extends Component {
             </CardContent>
         </Card>
     );
+  }
+
+  newStock(newStock, productId) {
+      console.log(newStock, productId)
+      fire.firestore().collection('products').doc(productId).update({
+        stock: newStock,
+        endOfStock: false,
+        endOfStockInfo: null
+      })
   }
 
   componentWillMount() {

@@ -11,7 +11,7 @@ class SupervisorDashboard extends Component {
             <CardContent>
                 <h3> Suivi des commandes </h3>
 
-                <div className="content">
+                <div className="supervisor-content">
 
                     <h4> En attente </h4>
 

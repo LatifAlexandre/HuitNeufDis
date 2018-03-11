@@ -42,10 +42,10 @@ https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=1
 ### end of stock alert from a preparator
 
 ```
-https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=..
+https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=..&firstname=..&lastname=..
 ```
 
 #### example :
 ```
-https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=2
+https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=2&firstname=jon&lastname=doe
 ```
