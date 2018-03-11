@@ -20,7 +20,7 @@ var productsData = [
          "productName": "product B",
        },
        {
-         "id": "1",
+         "id": "6",
          "position": {
            "compartment": "E",
            "shelf": "F",
@@ -40,7 +40,7 @@ var productsData = [
          "productName": "product C",
        },
        {
-         "id": "3",
+         "id": "8",
          "position": {
            "compartment": "Z",
            "shelf": "H",
@@ -50,7 +50,7 @@ var productsData = [
          "productName": "product H",
        },
        {
-         "id": "2",
+         "id": "7",
          "position": {
            "compartment": "T",
            "shelf": "R",

@@ -1,9 +1,15 @@
 import React , {Component} from 'react';
-import { StyleSheet, Image, View, Dimensions } from 'react-native';
+// import { StyleSheet, Image, View, Dimensions } from 'react-native';
 import {StackNavigator } from 'react-navigation';
-import UserLogin from './components/UserLogin.component';
+// import UserLogin from './components/UserLogin.component';
+import LoginPage from './screens/LoginPage.screen';
+import ProductListPage from './screens/ProductListPage.screen';
 
-export default class App extends Component {
+const Navigation = StackNavigator({
+  LoginPage: {screen: LoginPage},
+  ProductListPage: {screen: ProductListPage}
+});
+export default Navigation; /*extends Component {
   render() {
     // fetch('https ://mywebsite.com/endpoint/', {
     //   method: 'POST',
@@ -34,15 +40,15 @@ export default class App extends Component {
     //   console.error(error);
     // });
 
-    return (
-      <View style={styles.container}>
-      <Image
-        style={styles.backgroundImage}
-        source={{ uri: 'https://i.ytimg.com/vi/v1SabYdIlZI/maxresdefault.jpg' }}
-      />
-        <UserLogin></UserLogin>
-      </View>
-    );
+    // return (
+    //   <View style={styles.container}>
+    //   <Image
+    //     style={styles.backgroundImage}
+    //     source={{ uri: 'https://i.ytimg.com/vi/v1SabYdIlZI/maxresdefault.jpg' }}
+    //   />
+    //     <UserLogin></UserLogin>
+    //   </View>
+    // );
   }
 }
 
@@ -66,3 +72,4 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 });
+*/

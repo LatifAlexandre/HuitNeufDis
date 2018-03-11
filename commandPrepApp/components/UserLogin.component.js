@@ -7,6 +7,7 @@ import productsData from '../data/users.data';
 /** model **/
 import Product from '../model/Product';
 import Position from '../model/Position';
+import { NavigationActions } from 'react-navigation';
 
 export default class UserLogin extends Component{
 
@@ -14,6 +15,11 @@ export default class UserLogin extends Component{
         logged: false,
         buttonText: 'Login',
         id: ''
+    }
+
+    constructor(props){
+        super(props);
+        this.navigation = this.props.navigation;
     }
     
     render(){
@@ -58,13 +64,21 @@ export default class UserLogin extends Component{
                     style = {styles.generateCommandPrepGroupButtonStyle}
                     onPress = {
                             () => {
+                                var i = 0;
                                 this.products = productsData.map(function(prod){
                                     var position = new Position(prod.position.compartment, prod.position.shelf, prod.position.x, prod.position.y);
-                                    var product = new Product(prod.id, prod.productName, position);
-                                    console.log(product);
-                                    console.log(" ---------- ");
+                                    var product = new Product(prod.id, prod.productName, position, i);
+                                    // console.log(product);
+                                    // console.log(" ---------- ");
+                                    i++;
                                     return product;
                                 });
+
+                                this.props.navigation.dispatch(NavigationActions.reset({
+                                    index: 0,
+                                    key: null,
+                                    actions: [NavigationActions.navigate({ routeName: 'ProductListPage', params: {products: this.products} })]
+                                }));
                                 // Keyboard.dismiss();
                                 // this.setState({logged: true});
                                 // this.setState({userName: this.state.id});
@@ -72,8 +86,8 @@ export default class UserLogin extends Component{
                             }
                     }   
                 >
-                    <FontAwesome name='file' size={30} color="#fff" />
-                    <Text style = {{color: 'white', fontSize: 16}}>Generate command preparation order</Text>
+                    <FontAwesome name='file' size={25} color="#fff" />
+                    <Text style = {{color: 'white', fontSize: 16, flex: 1, paddingLeft: 10}}>Generate command preparation order</Text>
                 </TouchableOpacity>
             }
             
@@ -114,6 +128,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     generateCommandPrepGroupButtonStyle: {
+        flexDirection: 'row',
         position: 'absolute',
         bottom: 0,
         marginTop: 10,
