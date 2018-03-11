@@ -5,11 +5,67 @@
   <title>Titre de la page</title>
   <script src="https://www.gstatic.com/firebasejs/4.9.0/firebase.js"></script>
   <script src="https://www.gstatic.com/firebasejs/4.9.1/firebase-firestore.js"></script>
-  <script src="populate_bdd.js"></script>
+  <script src="initialization.js"></script>
+  <script src="populate_db.js"></script>
+  <!-- <script src="queries.js"></script> -->
+  <style>
+
+    body {
+      text-align: center;
+    }
+
+    #lowpg {
+      border: 1px solid black;
+      min-height: 20px;
+      margin: 10px;
+    }
+
+    #log p {
+      color: red;
+    }
+  </style>
 </head>
 <body>
-  ...
-  <!-- Le reste du contenu -->
-  ...
+  
+  <h1> Initialisation de la base de donnée </h1>
+  <h3>
+    Le bouton suivant va initialiser la base de donnée <strong> firebase </strong>
+    avec de fausses données.
+  </h3>
+  <button onclick="populate_db('log')"> Initialiser la base de donnée </button>
+  <div id="log"></div>
+
+  <h3> possibles requêtes </h3>
+
+  <h4> the preparator Jon Doe (id 3), ask a bunch of products (max weight is 30 kg) </h4>
+  
+  <a href='https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup?maxWeight=20&firstname=jon&lastname=doe'>
+    https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup?maxWeight=20&firstname=jon&lastname=doe
+  </a> <br>
+  
+  <h4> he scan the products of one after the other </h4>
+  
+  <a href='https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=1&commandId=1'>
+    https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=1&commandId=1
+  </a> <br>
+  
+  <a href='https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=4&commandId=2'>
+    https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=4&commandId=2
+  </a> <br>
+  
+  <a href='https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=2&commandId=1'>
+    https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=2&commandId=1
+  </a> <br>
+  
+  <a href='https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=3&commandId=1'>
+    https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=3&commandId=1
+  </a> <br>
+
+  <h4> and signal an end of stock for the product 5 </h4>
+
+  <a href='https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=5&firstname=Jon&lastname=Doe'>
+    https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=5&firstname=Jon&lastname=Doe
+  </a> <br>
+
 </body>
 </html>

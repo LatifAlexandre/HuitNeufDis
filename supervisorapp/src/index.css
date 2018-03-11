@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background-color: #EEE;
+}
+
+.container {
+  margin: 20px auto;
+  width: 90%;
+  max-width: 1000px;
+}

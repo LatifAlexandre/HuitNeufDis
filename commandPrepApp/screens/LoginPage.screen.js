@@ -11,10 +11,10 @@ export default class LoginPage extends Component {
     var {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-      <Image
+      {/* <Image
         style={styles.backgroundImage}
         source={{ uri: 'https://i.ytimg.com/vi/v1SabYdIlZI/maxresdefault.jpg' }}
-      />
+      /> */}
         <UserLogin navigation={this.props.navigation}></UserLogin>
       </View>
     );
@@ -36,7 +36,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: '#e6eeff',
     alignItems: 'center',
     justifyContent: 'center',
   },

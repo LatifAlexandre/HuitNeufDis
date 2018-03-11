@@ -28,7 +28,8 @@ model of the bdd
 
 - weight
 - dateOfCreation
-- state : 'waiting' | 'in progress' | 'finished'
+- state : 'waiting' | 'in_progress' | 'finished' <-- trigger when a product become scanned
+- numberOfUnscannedProducts
 ++ products []
     - id
         - productName
@@ -39,7 +40,7 @@ model of the bdd
     - firstname
     - lastname
 
-## ++commandPrepGroups
+----------------------------------------------------
 
 ### commandPrepGroup
     ++products <-- listed by position

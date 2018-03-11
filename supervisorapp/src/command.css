@@ -1,0 +1,50 @@
+.command-box{
+    box-shadow: 0px 0px 5px silver;
+    padding: 0px;
+    margin: 10px;
+    background-color: rgb(223, 236, 252);
+    border-radius: 5px;
+    border: 1px solid rgb(100, 100, 141);
+}
+
+.command-box-header {
+    background-color: rgb(100, 100, 141);
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.command-box-header .command-name {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.command-box-header .date-of-creation {
+    color: rgb(197, 197, 197);
+    margin-top: 0px;
+}
+
+.command-box-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    padding: 10px;
+}
+
+.preparator {
+    font-weight: bold;
+}
+
+.progress-bar {
+    width: 100%;
+    min-height: 20px;
+}
+
+.product-prepared {
+    align-self: flex-end;
+    font-style: italic;
+    margin: 7px;
+}
+
+.chip {
+    background-color: red;
+}
