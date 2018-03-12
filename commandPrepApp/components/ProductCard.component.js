@@ -25,7 +25,7 @@ class PositionCard extends Component{
     render(){
         return (
             <View>
-                <Text>X {this.props.position.x}, Y {this.props.position.y}, Compartment {this.props.position.compartment}, Shelf {this.props.position.shelf}</Text>
+                <Text>X {this.props.position && this.props.position.x}, Y {this.props.position && this.props.position.y}, Compartment {this.props.position && this.props.position.compartment}, Shelf {this.props.position && this.props.position.shelf}</Text>
             </View>
         );
     }
