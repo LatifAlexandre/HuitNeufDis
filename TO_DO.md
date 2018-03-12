@@ -12,3 +12,5 @@
 - [ ] afficher la position des produits dans l'application de manière plus sympa
 - [ ] faire des notifications de navigateur
 - [ ] afficher l'image d'un produit pour le préparateur de commande
+- [ ] nommer les application de manière meilleur
+- [ ] rendre le code plus propre
