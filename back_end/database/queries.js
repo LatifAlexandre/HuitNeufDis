@@ -155,3 +155,12 @@ db.collection('products').doc('2').get().then(doc => {
         stock: doc.data().stock -1
     })
 })
+
+db.collection('preparators').doc('0').get()
+    .then(doc => {
+        console.log('THEN')
+        console.log(doc.data())
+    })
+    .catch (error => {
+        console.log('catch ' + error)
+    })

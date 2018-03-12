@@ -8,7 +8,7 @@ function populate_db(idName) {
     // ------------------------------- add preparators ------------------------
 
     db.collection("preparators").doc('1').set({firstname: 'George', lastname: 'Bush', maxSupportedWeight: 30})
-    db.collection("preparators").doc('2').set({firstname: 'Dan', lastname: 'Rab', maxSupportedWeight: 50})
+    db.collection("preparators").doc('2').set({firstname: 'Dan', lastname: 'Rab', maxSupportedWeight: 20})
     db.collection("preparators").doc('3').set({firstname: 'Jon', lastname: 'Doe', maxSupportedWeight: 20})
 
     document.getElementById(idName).innerHTML +='<p> création des préparateurs </p>'
@@ -30,7 +30,7 @@ function populate_db(idName) {
     });
     db.collection("products").doc('3').set({
         productName: 'product C',
-        stock: 6,
+        stock: 9,
         endOfStockInfo: null,
         endOfStock: false,
         position: { x: 3, y: 1, shelf: 'R', compartment: 'U'}
@@ -95,9 +95,10 @@ function populate_db(idName) {
             scanned: false,
             number: 1,
         });
-        db.collection("commands").doc('1').collection('products').doc('3').set({
-            productName: 'product C',
-            position: { x: 3, y: 1, shelf: 'R', compartment: 'U'},
+
+        db.collection("commands").doc('1').collection('products').doc('4').set({
+            productName: 'product D',
+            position: { x: 5, y: 2, shelf: 'T', compartment: 'V'},
             scanned: false,
             number: 3,
         });
@@ -110,18 +111,19 @@ function populate_db(idName) {
         numberOfUnscannedProducts: 2,
         preparator: null//{ firstname: 'dan', lastname: 'rab'},
     });
-        db.collection("commands").doc('2').collection('products').doc('4').set({
-            productName: 'product D',
-            position: { x: 5, y: 2, shelf: 'T', compartment: 'V'},
+        db.collection("commands").doc('2').collection('products').doc('3').set({
+            productName: 'product C',
+            position: { x: 3, y: 1, shelf: 'R', compartment: 'U'},
             scanned: false,
             number: 3,
         });
-        db.collection("commands").doc('2').collection('products').doc('5').set({
-            productName: 'product E',
-            position: { x: 4, y: 3, shelf: 'D', compartment: 'H'},
+        db.collection("commands").doc('2').collection('products').doc('6').set({
+            productName: 'product F',
+            position: { x: 2, y: 2, shelf: 'F', compartment: 'E'},
             scanned: false,
-            number: 2,
+            number: 1,
         });
+
 
     db.collection("commands").doc('3').set({
         weight: 5,
@@ -131,11 +133,11 @@ function populate_db(idName) {
         numberOfUnscannedProducts: 3,
         preparator: null//{ firstname: 'jon', lastname: 'doe'}
     });
-        db.collection("commands").doc('3').collection('products').doc('6').set({
-            productName: 'product F',
-            position: { x: 2, y: 2, shelf: 'F', compartment: 'E'},
+        db.collection("commands").doc('3').collection('products').doc('5').set({
+            productName: 'product E',
+            position: { x: 4, y: 3, shelf: 'D', compartment: 'H'},
             scanned: false,
-            number: 1,
+            number: 2,
         });
         db.collection("commands").doc('3').collection('products').doc('7').set({
             productName: 'product G',

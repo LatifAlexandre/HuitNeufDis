@@ -16,10 +16,14 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 // --------------------------------- get a preparator from its id -----------------------------------
 
 exports.getPreparator = functions.https.onRequest((request, response) => {
+
     const preparatorId = request.query.id;
+    console.log(`--> call of getPreparator with id=${preparatorId}`)
+    
     // response.json(preparatorId)
     admin.firestore().collection('preparators').doc(preparatorId).get()
     .then(doc => {
+        console.log('\tget ' + JSON.stringify(doc.data()))
         var preparator = doc.data()
         response.json(preparator)
     })
@@ -32,6 +36,9 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
     const maxWeight = Number(request.query.maxWeight);
     const prepFirstName = request.query.firstname;
     const prepLastName = request.query.lastname;
+
+    console.log(`--> call of getCommandPrepGroup with maxWeight=${maxWeight}, firstname=${prepFirstName} and lastname=${prepLastName}`)
+
     var weight = 0;
     var commandPrepGroup = [];
     
@@ -42,13 +49,14 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
             querySnapshot.forEach(function(doc) {
                 var command = doc.data();
                 var commandId = doc.id;
-                // it the command if light enough
+                // if the command is light enough
                 if (command.weight + weight <= maxWeight) {
                     // we increment the weight
                     weight += command.weight;
                     // we get all the products of this command
                     admin.firestore().collection("commands").doc(doc.id).collection("products").get()
                         .then( function(querySnapshot) {
+                            console.log(`\t command ${commandId}/product ${doc.id} is added`)
                             querySnapshot.forEach(function(doc) {
                                 var product = doc.data();
                                 commandPrepGroup.push({
@@ -65,11 +73,13 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
                         preparator: { firstname: prepFirstName, lastname: prepLastName},
                         state: 'in_progress'
                     })
+                    console.log(`\t the state and the preparator of the command is updated`)
                 }
             });
 
             // we return the product array
             setTimeout( () => {
+                console.log('\t the products are returned as JSON')
                 response.json(orderProductList(commandPrepGroup));
             }, 1000)
                 
@@ -103,6 +113,8 @@ exports.scanProduct = functions.https.onRequest((request, response) => {
 
     const commandId = request.query.commandId;
     const productId = request.query.productId;
+
+    console.log(`--> call of scanProduct with commandId=${commandId}, productId=${productId}`)
 
     admin.firestore().collection('commands').doc(commandId).collection('products').doc(productId).get()
     .then( doc => {
@@ -138,9 +150,13 @@ exports.scanProduct = functions.https.onRequest((request, response) => {
 // ----------------------------- end of stock alert from a preparator ---------------------------
 
 exports.endOfStockAltert = functions.https.onRequest((request, response) => {
+
+    
     const productId = request.query.productId;
     const firstname = request.query.firstname;
     const lastname = request.query.lastname;
+
+    console.log(`--> call of endOfStockAltert with productId=${productId}, firstname=${firstname} and lastname=${lastname}`)
 
     admin.firestore().collection('products').doc(productId).update({
         endOfStock: true,
