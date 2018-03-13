@@ -1,7 +1,7 @@
 # TODO
 
-- [ ] supprimer le number des comand/products
-- [ ] gérer les produits redondant dans une commande
+- [X] supprimer le number des comand/products
+- [X] gérer les produits redondant dans une commande
   - solution possible :
     - les produits d'une commande ont un id != des produits
 - [ ] minimiser la distance des commande regroupées dans un bon de commande
