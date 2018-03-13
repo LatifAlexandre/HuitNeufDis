@@ -54,14 +54,15 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
                     // we increment the weight
                     weight += command.weight;
                     // we get all the products of this command
-                    admin.firestore().collection("commands").doc(doc.id).collection("products").get()
+                    admin.firestore().collection("commands").doc(commandId).collection("products").get()
                         .then( function(querySnapshot) {
-                            console.log(`\t command ${commandId}/product ${doc.id} is added`)
                             querySnapshot.forEach(function(doc) {
+                                console.log(`\t command ${commandId}/product ${doc.id} is added`)
                                 var product = doc.data();
                                 commandPrepGroup.push({
                                     commandId: commandId,
-                                    productId: doc.id,
+                                    commandProductId: doc.id,
+                                    productId: product.productId,
                                     productName: product.productName,
                                     position: product.position
                                 });
@@ -112,17 +113,18 @@ function orderProductList(productList) {
 exports.scanProduct = functions.https.onRequest((request, response) => {
 
     const commandId = request.query.commandId;
+    const commandProductId = request.query.commandProductId;
     const productId = request.query.productId;
 
-    console.log(`--> call of scanProduct with commandId=${commandId}, productId=${productId}`)
+    console.log(`--> call of scanProduct with commandId=${commandId} and commandProductId=${commandProductId}, productId=${productId}`)
 
-    admin.firestore().collection('commands').doc(commandId).collection('products').doc(productId).get()
+    admin.firestore().collection('commands').doc(commandId).collection('products').doc(commandProductId).get()
     .then( doc => {
         if (doc.data().scanned) {
-            response.send(`the product ${productId} in the command ${productId} is already scanned`)
+            response.send(`the product ${commandProductId} in the command ${commandId} is already scanned`)
         } else {
             // put scanned on true in the related product *in the command*
-            admin.firestore().collection('commands').doc(commandId).collection('products').doc(productId).update({
+            admin.firestore().collection('commands').doc(commandId).collection('products').doc(commandProductId).update({
                 scanned: true
             })
         
