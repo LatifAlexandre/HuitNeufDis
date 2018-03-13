@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, FlatList, Text, TouchableOpacity, Dimensions, Alert} from 'react-native';
+import {StyleSheet, View, FlatList, Text, TouchableOpacity, Dimensions, Alert, LayoutAnimation} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Progress from 'react-native-progress';
 import { BarCodeScanner, Permissions } from 'expo';
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 import ProductCard from './ProductCard.component';
 export default class ProductList extends Component{
@@ -18,6 +19,7 @@ export default class ProductList extends Component{
             lastScannedUrl: null,
             wantToScan: false,
         }
+        console.log("constructor : " + this.props.user);
         this.products = this.props.products;
         this.state.actualProduct= this.products[this.state.actualProductKey];
     }
@@ -34,17 +36,22 @@ export default class ProductList extends Component{
       };
 
     _handleBarCodeRead = result => {
-        if (result.data !== this.state.lastScannedUrl) {
-        //   LayoutAnimation.spring();
+        // if (result.data !== this.state.lastScannedUrl) {
+          LayoutAnimation.spring();
           this.setState({
               lastScannedUrl: result.data,
               wantToScan: false
             });
             console.log("res : " + result.data + ", p.id : " + this.state.actualProduct.id);
             if (result.data == this.state.actualProduct.id){
+                fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=' + this.state.actualProduct.id + '&commandId=' + this.state.actualProduct.commandId);
+                this.refs.toast.show('Product scanned!',DURATION.LENGTH_LONG);
                 this.handle();
-          }
-        }
+            }
+            else {
+                this.refs.toast.show('That\'s not ' + this.state.actualProduct.name + '!',DURATION.LENGTH_LONG);
+            }
+        // }
       };
 
     handle(){
@@ -82,20 +89,21 @@ export default class ProductList extends Component{
                 }
                 <Text>{parseInt(this.state.scannedProductsPercentage * 100, 10)}%</Text>
                 <Progress.Bar progress={this.state.scannedProductsPercentage} width={250} style={styles.progressBar} />
-                <ProductCard name={this.state.actualProduct.name} position={this.state.actualProduct.position}></ProductCard>
+                <ProductCard name={(this.state && this.state.actualProduct) && this.state.actualProduct.name} position={(this.state && this.state.actualProduct) && this.state.actualProduct.position}></ProductCard>
 
                 <View style={styles.buttonsContainer}>
                     <TouchableOpacity style={styles.reportOutOfStockButtonStyle}
                         onPress = { () => {
                             Alert.alert(
                                 'Out of stock',
-                                'Report ' + this.state.actualProduct.name + ' out of stock ?',
+                                'Report ' + (this.state && this.state.actualProduct) && this.state.actualProduct.name + ' out of stock ?',
                                 [
                                 //   {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
                                   {text: 'Cancel', onPress: () => console.log(''), style: 'cancel'},
                                   {text: 'OK', onPress: () => 
                                     {
-                                        console.log(this.state.actualProduct.name + ' reported out of stock');
+                                        console.log('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=' + this.state.actualProduct.id + '&firstname=' + this.props.user.firstname + '&lastname=' + this.props.user.lastname);
+                                        fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=' + this.state.actualProduct.id + '&firstname=' + this.props.user.firstname + '&lastname=' + this.props.user.lastname);
                                         this.handle();
                                     }
                                 },
@@ -114,6 +122,16 @@ export default class ProductList extends Component{
                         <Text style = {{color: 'white', fontSize: 16, flex: 1, paddingLeft: 10}}>Scan</Text>
                     </TouchableOpacity>
                 </View>
+                <Toast
+                    ref="toast"
+                    style={{backgroundColor:'#eee'}}
+                    position='bottom'
+                    positionValue={200}
+                    fadeInDuration={750}
+                    fadeOutDuration={1000}
+                    opacity={0.8}
+                    textStyle={{color:'black'}}
+                />
             </View>
         );
     }

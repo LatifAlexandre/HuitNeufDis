@@ -1,6 +1,7 @@
 import React , {Component} from 'react';
 import { StyleSheet, View, Image, Button, Dimensions } from 'react-native';
 import { NavigationActions } from 'react-navigation';
+
 import ProductList from '../components/ProductList.component';
 
 export default class ProductListPage extends Component {
@@ -11,18 +12,20 @@ export default class ProductListPage extends Component {
 
   constructor(props){
     super(props);
-    
   }
 
   render() {
     var {navigate} = this.props.navigation;
+    console.log(this.props.navigation.state.params.currentUser);
     return (
       <View style={styles.container}>
       {/* <Image
         style={styles.backgroundImage}
         source={{ uri: 'https://i.ytimg.com/vi/v1SabYdIlZI/maxresdefault.jpg' }}
       /> */}
-      <ProductList products={this.props.navigation.state.params.products}></ProductList>
+      { (this.props && this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.products && this.props.navigation.state.params.currentUser) &&
+        <ProductList products={this.props.navigation.state.params.products} user={this.props.navigation.state.params.currentUser}></ProductList>
+      }
       </View>
     );
   }
