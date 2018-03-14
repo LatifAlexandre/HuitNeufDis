@@ -112,25 +112,25 @@ export default class ProductList extends Component{
                               );
                         }}
                     >
-                        <FontAwesome name='exclamation-triangle' size={25} color="red" />
+                        <FontAwesome name='exclamation-triangle' size={25} color="#212121" />
                         <Text style = {{color: 'white', fontSize: 16, flex: 1, paddingLeft: 10}}>Report out of stock</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.scanButtonStyle}
                         onPress={ () => this.setState({wantToScan: !this.state.wantToScan})}
                     >
-                        <FontAwesome name='barcode' size={25} color="#000" />
+                        <FontAwesome name='barcode' size={25} color="#212121" />
                         <Text style = {{color: 'white', fontSize: 16, flex: 1, paddingLeft: 10}}>Scan</Text>
                     </TouchableOpacity>
                 </View>
                 <Toast
                     ref="toast"
-                    style={{backgroundColor:'#eee'}}
+                    style={{backgroundColor:'#b2fef7'}}
                     position='bottom'
                     positionValue={200}
-                    fadeInDuration={750}
-                    fadeOutDuration={1000}
-                    opacity={0.8}
-                    textStyle={{color:'black'}}
+                    fadeInDuration={100}
+                    fadeOutDuration={400}
+                    opacity={0.9}
+                    textStyle={{color:'#212121'}}
                 />
             </View>
         );
@@ -148,25 +148,27 @@ const styles = StyleSheet.create({
       marginTop: 30,
     },
     buttonsContainer:{
+        marginTop: 10,
+        marginBottom: 5,
         flexDirection: 'row',
     },
     scanButtonStyle: {
-        marginTop: 10,
         alignItems: 'center',
         padding: 10,
-        width: viewportWidth/2,
-        borderColor: 'black',
-        backgroundColor: '#4e89e8',
+        width: viewportWidth/2.1,
+        backgroundColor: '#FFEB3B',
+        borderRadius: 10,
     },
     reportOutOfStockButtonStyle: {
-        marginTop: 10,
+        marginRight: 5,
         alignItems: 'center',
         padding: 10,
-        width: viewportWidth/2,
-        borderColor: 'black',
-        backgroundColor: 'yellow',
+        width: viewportWidth/2.1,
+        backgroundColor: '#FF5252',
+        borderRadius: 10,
     },
     progressBar: {
+        backgroundColor: '#FFEB3B',
         marginBottom: 20
     }
   });
