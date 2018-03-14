@@ -11,11 +11,13 @@ export default class LoginPage extends Component {
     var {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-      {/* <Image
-        style={styles.backgroundImage}
-        source={{ uri: 'https://i.ytimg.com/vi/v1SabYdIlZI/maxresdefault.jpg' }}
-      /> */}
-        <UserLogin navigation={this.props.navigation}></UserLogin>
+        {(this.navigation && this.navigation.state && this.navigation.state.params && this.navigation.state.params.user) ?
+            // this.state.currentUser = this.navigation.state.params.user;
+            // this.state.logged = true;
+            <UserLogin navigation={this.props.navigation} user={this.navigation.state.params.user}></UserLogin>
+            :
+            <UserLogin navigation={this.props.navigation}></UserLogin>
+        }
       </View>
     );
   }

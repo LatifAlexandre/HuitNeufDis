@@ -16,7 +16,6 @@ export default class ProductListPage extends Component {
 
   render() {
     var {navigate} = this.props.navigation;
-    console.log(this.props.navigation.state.params.currentUser);
     return (
       <View style={styles.container}>
       {/* <Image
@@ -24,7 +23,7 @@ export default class ProductListPage extends Component {
         source={{ uri: 'https://i.ytimg.com/vi/v1SabYdIlZI/maxresdefault.jpg' }}
       /> */}
       { (this.props && this.props.navigation && this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.products && this.props.navigation.state.params.currentUser) &&
-        <ProductList products={this.props.navigation.state.params.products} user={this.props.navigation.state.params.currentUser}></ProductList>
+        <ProductList navigation={this.props.navigation} products={this.props.navigation.state.params.products} user={this.props.navigation.state.params.currentUser}></ProductList>
       }
       </View>
     );
@@ -36,7 +35,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b2dfdb',
+    backgroundColor: '#009688',
     alignItems: 'center',
     justifyContent: 'center',
   },
