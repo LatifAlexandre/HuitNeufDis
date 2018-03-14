@@ -19,16 +19,6 @@ export default class LoginPage extends Component {
       </View>
     );
   }
-
-  // resetNavigation(targetRoute) {
-  //   const resetAction = NavigationActions.reset({
-  //     index: 0,
-  //     actions: [
-  //       NavigationActions.navigate({ routeName: targetRoute }),
-  //     ],
-  //   });
-  //   this.props.navigation.dispatch(resetAction);
-  // }
 }
 
 const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
@@ -36,7 +26,7 @@ const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window'
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e6eeff',
+    backgroundColor: '#009688',
     alignItems: 'center',
     justifyContent: 'center',
   },

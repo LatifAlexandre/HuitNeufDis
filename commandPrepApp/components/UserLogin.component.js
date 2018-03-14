@@ -30,11 +30,15 @@ export default class UserLogin extends Component{
         return(
             <View style = {styles.container}>
             { this.state.logged ?
-                    <Text style={styles.welcomeTextStyle}>Welcome {this.state.currentUser.firstname} {this.state.currentUser.lastname}</Text>
+                    <View style = {styles.container}>
+                        <FontAwesome name='user' size={90} color="#FFEB3B" />
+                        <Text style={styles.welcomeTextStyle}>Welcome {this.state.currentUser.firstname} {this.state.currentUser.lastname}</Text>
+                    </View>
                     :
                     <View style={{alignItems: 'center'}}>
-                        <TextInput 
-                            style={{height: 40, width: (viewportWidth - 100), borderColor: 'transparent', borderWidth: 1}}
+                        <TextInput
+                            placeholderTextColor = '#FFEB3B'
+                            style={{color:'#FFEB3B', fontSize: 16,height: 40, width: (viewportWidth/1.2), borderColor: 'transparent', borderWidth: 1}}
                             textAlign={'center'}
                             onChangeText={(id) => this.setState({id})} 
                             value={this.state.id}
@@ -68,18 +72,17 @@ export default class UserLogin extends Component{
                                             .catch((error) => {
                                                 console.error(error);
                                             });
-                                            // Alert.alert('Your id : ' + this.state.id);
                                         }
                                     }
                             }   
                         >
-                            <Text style = {{color: 'white'}}> {this.state.buttonText} </Text>
+                            <Text style = {{color: '#212121'}}> {this.state.buttonText} </Text>
                         </TouchableOpacity>
                     </View>
             }
             { this.state.logged && 
                 <TouchableOpacity style = {styles.disconnectButtonStyle} onPress = {() => this.setState({logged: false})}>
-                <FontAwesome name='sign-out' size={30} color="#fff" />
+                <FontAwesome name='sign-out' size={30} color="#212121" />
                 </TouchableOpacity>
             }
             { this.state.logged &&
@@ -88,6 +91,7 @@ export default class UserLogin extends Component{
                     onPress = {
                             () => {
                                 var i = 0;
+                                console.log('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup?maxWeight=' + this.state.currentUser.maxSupportedWeight + '&firstname=' + this.state.currentUser.firstname + '&lastname=' + this.state.currentUser.lastname);
                                 fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup?maxWeight=' + this.state.currentUser.maxSupportedWeight + '&firstname=' + this.state.currentUser.firstname + '&lastname=' + this.state.currentUser.lastname)
                                 .then(response => {
                                     if (response._bodyInit !== "" && response._bodyInit !== "[]"){
@@ -98,13 +102,9 @@ export default class UserLogin extends Component{
                                 })
                                 .then((responseJson) => {
                                     if (responseJson !== null){
-                                        // console.log("------------------------");
-                                        // console.log(responseJson);
                                         this.state.products = responseJson.map(function(prod){
-                                            // console.log(prod);
                                             var position = new Position(prod.position.compartment, prod.position.shelf, prod.position.x, prod.position.y);
-                                            var product = new Product(prod.productId, prod.productName, position, i, prod.commandId);
-                                            // console.log(" ---------- ");
+                                            var product = new Product(prod.productId, prod.productName, position, i, prod.commandId, prod.commandProductId);
                                             i++;
                                             return product;
                                         });
@@ -115,9 +115,6 @@ export default class UserLogin extends Component{
                                                 actions: [NavigationActions.navigate({ routeName: 'ProductListPage', params: {products: this.state.products, currentUser: this.state.currentUser} })]
                                             }));
                                         }
-                                        // var  user = new User(this.state.id, responseJson.firstname, responseJson.lastname, responseJson.maxSupportedWeight);
-                                        // this.setState({currentUser : user, logged: true, id: ''});
-                                        // console.log(user);
                                         Keyboard.dismiss();
                                     } else {
                                         this.refs.toast.show('No commands for you for the moment!',DURATION.LENGTH_LONG);
@@ -126,27 +123,22 @@ export default class UserLogin extends Component{
                                 .catch((error) => {
                                     console.error(error);
                                 });
-
-                                // Keyboard.dismiss();
-                                // this.setState({logged: true});
-                                // this.setState({userName: this.state.id});
-                                // this.setState({id: ''});
                             }
                     }   
                 >
-                    <FontAwesome name='file' size={25} color="#fff" />
-                    <Text style = {{color: 'white', fontSize: 16, flex: 1, paddingLeft: 10}}>Generate command preparation order</Text>
+                    <FontAwesome name='file' size={25} color="#212121" />
+                    <Text style = {{color: '#212121', fontSize: 18, flex: 1, paddingLeft: 10}}>Generate command preparation order</Text>
                 </TouchableOpacity>
             }
             <Toast
                     ref="toast"
-                    style={{backgroundColor:'#eee'}}
+                    style={{backgroundColor:'#b2fef7'}}
                     position='bottom'
                     positionValue={200}
                     fadeInDuration={100}
-                    fadeOutDuration={1000}
-                    opacity={0.8}
-                    textStyle={{color:'red'}}
+                    fadeOutDuration={400}
+                    opacity={0.9}
+                    textStyle={{color:'#212121'}}
                 />
             </View>
         );
@@ -165,24 +157,30 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     loginButtonStyle: {
+        justifyContent: 'center',
         alignItems: 'center',
         padding: 10,
-        width: 200,
-        borderColor: '#2980b9',
-        backgroundColor: '#49ce2b',
+        width: viewportWidth/1.2,
+        height: viewportHeight/10,
+        backgroundColor: '#FFEB3B',
+        borderRadius: 20,
     },
     disconnectButtonStyle: {
+        borderBottomLeftRadius: 70,
+        borderBottomRightRadius: 70,
+        borderTopLeftRadius: 70,
+        borderTopRightRadius: 0,
         position: 'absolute',
         top: 0,
         right: 0,
-        alignItems: 'center',
+        alignItems: 'flex-start',
         padding: 10,
-        borderColor: 'red',
-        backgroundColor: 'red',
+        backgroundColor: '#B2DFDB',
     },
     welcomeTextStyle: {
         fontSize: 25,
         fontWeight: 'bold',
+        color: '#FFFFFF',
     },
     generateCommandPrepGroupButtonStyle: {
         flexDirection: 'row',
@@ -192,7 +190,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: 10,
         width: viewportWidth,
-        borderColor: '#2980b9',
-        backgroundColor: '#4e89e8',
+        height: viewportHeight/6,
+        backgroundColor: '#FFEB3B',
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
     }
  })
