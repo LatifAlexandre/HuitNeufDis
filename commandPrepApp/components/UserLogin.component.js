@@ -27,6 +27,12 @@ export default class UserLogin extends Component{
     }
     
     render(){
+        if (this.props.user){
+            this.setState({
+                logged: true,
+                currentUser: user
+            });
+        }
         return(
             <View style = {styles.container}>
             { this.state.logged ?
@@ -52,7 +58,6 @@ export default class UserLogin extends Component{
                                             fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getPreparator?id=' + this.state.id)
                                             .then(response => {
                                                 if (response._bodyInit !== ""){
-                                                // console.log(response);
                                                 return response.json();
                                                 } else{
                                                     return null;
@@ -60,10 +65,8 @@ export default class UserLogin extends Component{
                                             })
                                             .then((responseJson) => {
                                                 if (responseJson !== null){
-                                                    // console.log("------------------------");
                                                     var  user = new User(this.state.id, responseJson.firstname, responseJson.lastname, responseJson.maxSupportedWeight);
                                                     this.setState({currentUser : user, logged: true, id: ''});
-                                                    // console.log(user);
                                                     Keyboard.dismiss();
                                                 } else {
                                                     this.setState({currentUser : new User(), logged: false, id: ''});
@@ -91,8 +94,7 @@ export default class UserLogin extends Component{
                     onPress = {
                             () => {
                                 var i = 0;
-                                console.log('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup?maxWeight=' + this.state.currentUser.maxSupportedWeight + '&firstname=' + this.state.currentUser.firstname + '&lastname=' + this.state.currentUser.lastname);
-                                fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup?maxWeight=' + this.state.currentUser.maxSupportedWeight + '&firstname=' + this.state.currentUser.firstname + '&lastname=' + this.state.currentUser.lastname)
+                                fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/getCommandPrepGroup2?maxWeight=' + this.state.currentUser.maxSupportedWeight + '&firstname=' + this.state.currentUser.firstname + '&lastname=' + this.state.currentUser.lastname)
                                 .then(response => {
                                     if (response._bodyInit !== "" && response._bodyInit !== "[]"){
                                         return response.json();
@@ -102,12 +104,22 @@ export default class UserLogin extends Component{
                                 })
                                 .then((responseJson) => {
                                     if (responseJson !== null){
+                                        var lastProd = null;
+                                        var sameProdNumber = 1;
                                         this.state.products = responseJson.map(function(prod){
+                                            if ( lastProd != null && lastProd.productId == prod.productId){
+                                                sameProdNumber++;
+                                                // console.log(prod.productName + " n°" + sameProdNumber)
+                                            } else {
+                                                sameProdNumber = 1;
+                                            }
                                             var position = new Position(prod.position.compartment, prod.position.shelf, prod.position.x, prod.position.y);
-                                            var product = new Product(prod.productId, prod.productName, position, i, prod.commandId, prod.commandProductId);
+                                            var product = new Product(prod.productId, sameProdNumber > 1 ? prod.productName + " n°" + sameProdNumber : prod.productName, position, i, prod.commandId, prod.commandProductId);
                                             i++;
+                                            lastProd = prod;
                                             return product;
                                         });
+
                                         {this.state.products != null &&
                                             this.props.navigation.dispatch(NavigationActions.reset({
                                                 index: 0,

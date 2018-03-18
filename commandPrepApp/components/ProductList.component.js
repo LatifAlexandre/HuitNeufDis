@@ -4,6 +4,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import * as Progress from 'react-native-progress';
 import { BarCodeScanner, Permissions } from 'expo';
 import Toast, {DURATION} from 'react-native-easy-toast'
+import { NavigationActions } from 'react-navigation';
 
 import ProductCard from './ProductCard.component';
 export default class ProductList extends Component{
@@ -19,7 +20,6 @@ export default class ProductList extends Component{
             lastScannedUrl: null,
             wantToScan: false,
         }
-        console.log("constructor : " + this.props.user);
         this.products = this.props.products;
         this.state.actualProduct= this.products[this.state.actualProductKey];
     }
@@ -37,14 +37,12 @@ export default class ProductList extends Component{
 
     _handleBarCodeRead = result => {
         // if (result.data !== this.state.lastScannedUrl) {
-          LayoutAnimation.spring();
           this.setState({
               lastScannedUrl: result.data,
               wantToScan: false
             });
-            console.log("res : " + result.data + ", p.id : " + this.state.actualProduct.id);
             if (result.data == this.state.actualProduct.id){
-                fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?productId=' + this.state.actualProduct.id + '&commandId=' + this.state.actualProduct.commandId);
+                fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/scanProduct?commandId=' + this.state.actualProduct.commandId + '&commandProductId=' + this.state.actualProduct.commandProductId + '&productId=' + this.state.actualProduct.id);
                 this.refs.toast.show('Product scanned!',DURATION.LENGTH_LONG);
                 this.handle();
             }
@@ -62,33 +60,54 @@ export default class ProductList extends Component{
                 scannedProductsPercentage: (this.state.actualProductKey+1) / this.products.length,
             });
         } else {
+            //TODO return to login page
             this.setState({
                 scannedProductsPercentage: (this.state.actualProductKey+1) / this.products.length,
             });
+            this.props.navigation.dispatch(NavigationActions.reset({
+                index: 0,
+                key: null,
+                actions: [NavigationActions.navigate({ routeName: 'LoginPage', params: {user: this.state.user}})]
+            }));
         }
     }
 
     render(){
         return(
             <View style={styles.container}>
+            <TouchableOpacity style = {styles.disconnectButtonStyle} onPress = {() => {
+                    this.props.navigation.dispatch(NavigationActions.reset({
+                        index: 0,
+                        key: null,
+                        actions: [NavigationActions.navigate({ routeName: 'LoginPage'})]
+                    }));
+                }
+            }>
+                <FontAwesome name='sign-out' size={30} color="#212121" />
+            </TouchableOpacity>
+            <View style={{flexDirection: 'row', marginTop: 20}}>
+                <FontAwesome name='user' size={25} color="#212121" />
+                <Text style={styles.welcomeTextStyle}>{this.props.user && this.props.user.firstname} {this.props.user && this.props.user.lastname}</Text>
+            </View>
             {
                 this.state.wantToScan ?
                 this.state.hasCameraPermission === null
                 ? null
                 : this.state.hasCameraPermission === false
                     ? null
-                    : <BarCodeScanner
+                    :<BarCodeScanner
                         onBarCodeRead={this._handleBarCodeRead}
                         style={{
-                            height: Dimensions.get('window').height,
-                            width: Dimensions.get('window').width,
+                            height: Dimensions.get('window').height/1.5,
+                            width: Dimensions.get('window').width/1.1,
+                            
                         }}
                         />
                         :
                         null
                 }
-                <Text>{parseInt(this.state.scannedProductsPercentage * 100, 10)}%</Text>
-                <Progress.Bar progress={this.state.scannedProductsPercentage} width={250} style={styles.progressBar} />
+                <Text style={{marginTop: 20, fontSize: 15, color: '#FFEB3B'}}>{parseInt(this.state.scannedProductsPercentage * 100, 10)}%</Text>
+                <Progress.Bar progress={this.state.scannedProductsPercentage} width={250} color = '#FFEB3B' unfilledColor = 'transparent' borderColor = '#B2DFDB' style={styles.progressBar} />
                 <ProductCard name={(this.state && this.state.actualProduct) && this.state.actualProduct.name} position={(this.state && this.state.actualProduct) && this.state.actualProduct.position}></ProductCard>
 
                 <View style={styles.buttonsContainer}>
@@ -99,10 +118,10 @@ export default class ProductList extends Component{
                                 'Report ' + (this.state && this.state.actualProduct) && this.state.actualProduct.name + ' out of stock ?',
                                 [
                                 //   {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
-                                  {text: 'Cancel', onPress: () => console.log(''), style: 'cancel'},
+                                  {text: 'Cancel', onPress: () => null, style: 'cancel'},
                                   {text: 'OK', onPress: () => 
                                     {
-                                        console.log('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=' + this.state.actualProduct.id + '&firstname=' + this.props.user.firstname + '&lastname=' + this.props.user.lastname);
+                                        // console.log('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=' + this.state.actualProduct.id + '&firstname=' + this.props.user.firstname + '&lastname=' + this.props.user.lastname);
                                         fetch('https://us-central1-huitneufdis-1e9f6.cloudfunctions.net/endOfStockAltert?productId=' + this.state.actualProduct.id + '&firstname=' + this.props.user.firstname + '&lastname=' + this.props.user.lastname);
                                         this.handle();
                                     }
@@ -144,11 +163,18 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: 'transparent',
       alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: 30,
+    //   justifyContent: 'center',
+    //   marginTop: 20,
+    width: viewportWidth,
+    },
+    welcomeTextStyle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#FFFFFF',
+        marginLeft: 5
     },
     buttonsContainer:{
-        marginTop: 10,
+        marginTop: 40,
         marginBottom: 5,
         flexDirection: 'row',
     },
@@ -168,8 +194,19 @@ const styles = StyleSheet.create({
         borderRadius: 10,
     },
     progressBar: {
-        backgroundColor: '#FFEB3B',
-        marginBottom: 20
-    }
+        marginBottom: 30
+    },
+    disconnectButtonStyle: {
+        borderBottomLeftRadius: 70,
+        borderBottomRightRadius: 70,
+        borderTopLeftRadius: 70,
+        borderTopRightRadius: 0,
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        alignItems: 'flex-start',
+        padding: 10,
+        backgroundColor: '#B2DFDB',
+    },
   });
   

@@ -9,7 +9,8 @@ const Navigation = StackNavigator({
   LoginPage: {screen: LoginPage},
   ProductListPage: {screen: ProductListPage}
 });
-export default Navigation; /*extends Component {
+export default Navigation;
+/*extends Component {
   render() {
     // fetch('https ://mywebsite.com/endpoint/', {
     //   method: 'POST',
