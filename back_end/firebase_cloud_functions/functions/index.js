@@ -157,6 +157,8 @@ exports.commandFinished = functions.firestore
 
 // ---------------- get a group of command according to a preparator's criterion ---------------
 
+// old version of the algorithm, deprecated
+// only take in account the date of the command and its weight
 exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
     
     const maxWeight = Number(request.query.maxWeight);
@@ -212,6 +214,8 @@ exports.getCommandPrepGroup = functions.https.onRequest((request, response) => {
         });
 });
 
+// new version of the algorithm
+// take in account the weight and the distance of a group of command
 exports.getCommandPrepGroup2 = functions.https.onRequest((request, response) => {
     
     const maxWeight = Number(request.query.maxWeight);
@@ -253,10 +257,11 @@ exports.getCommandPrepGroup2 = functions.https.onRequest((request, response) => 
 
         setTimeout( () => {
 
-            // now, commmands is a list of command, each command have some informations
-            // but we are interested here with the weight and the product positions of a command
+            // now, commmands is a list of command, each command have a weight
+            // and a list of products
             
             productListNoted = [];
+
             // we enumerate the list of all the possible combination of commands
             // so all the combination of 1  command + all combination of 2 commands + ... 
             getAllCombinationOf(commands).forEach( combination => {
@@ -278,14 +283,17 @@ exports.getCommandPrepGroup2 = functions.https.onRequest((request, response) => 
                     // we calculate the distance of this order of product
                     var distance = getDistanceOfProductList(products);
                     
-                    var max_distance = 35 // this is the maximum distance inthe hangar, used has bound here (the hangar has a dimension of 6 * 5)
+                    var max_distance = 35 // this is the maximum distance in the hangar, used has boundarie here
+                    // (the hangar has a dimension of 6 * 5)
+                    
                     distance_note = (max_distance - getDistanceOfProductList(products)) / max_distance
                     // we want to minimize the distance
                     // the note is the max_distance - distance of the combination of command
                     //so, if the distance is short, the note is close to one
                     
-                    // the finale note of a combination of command is an average with ponderation of these two notes
-                    // (here the ponderation are equal, but we could imagine a more accurate distribution according to the needs)
+                    // the finale note of a combination of command is an average with weigthing of these two notes
+                    // (here the weigthings give a bigger importance to the weight than the distance,
+                    // but we could imagine a different weighting according to the needs)
                     final_note = weight_note * 8 + distance_note * 2; 
 
                     // we store it
@@ -322,6 +330,7 @@ exports.getCommandPrepGroup2 = functions.https.onRequest((request, response) => 
                     })
                 })
 
+                // we return the best list of products
                 response.json(productListNoted[0].products)
             }
 

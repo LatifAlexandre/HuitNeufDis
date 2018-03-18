@@ -8,5 +8,5 @@ body {
 .container {
   margin: 20px auto;
   width: 90%;
-  max-width: 1000px;
+  /* max-width: 1000px; */
 }

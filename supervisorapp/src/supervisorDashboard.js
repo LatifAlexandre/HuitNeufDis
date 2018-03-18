@@ -15,30 +15,36 @@ class SupervisorDashboard extends Component {
 
                     <h4> En attente </h4>
 
-                    { this.state && this.state.commands ?
-                        this.state.commands['waiting'].map( command => {
-                            return <Command key={command.id} command={command}/>
-                        })
-                        : 'the commands are loading...'
-                    }
+                    <div className="cmd-waiting">
+                        { this.state && this.state.commands ?
+                            this.state.commands['waiting'].map( command => {
+                                return <Command key={command.id} command={command}/>
+                            })
+                            : 'the commands are loading...'
+                        }
+                    </div>
 
                     <h4> En cours de traitement </h4>
 
-                    { this.state && this.state.commands ?
-                        this.state.commands['in_progress'].map( command => {
-                            return <Command key={command.id} command={command}/>
-                        })
-                        : 'the commands are loading...'
-                    }
+                    <div className="cmd-in-progress">
+                        { this.state && this.state.commands ?
+                            this.state.commands['in_progress'].map( command => {
+                                return <Command key={command.id} command={command}/>
+                            })
+                            : 'the commands are loading...'
+                        }
+                    </div>
 
                     <h4> Finies </h4>
 
-                    { this.state && this.state.commands ?
-                        this.state.commands['finished'].map( command => {
-                            return <Command key={command.id} command={command}/>
-                        })
-                        : 'the commands are loading...'
-                    }
+                    <div className="cmd-end">
+                        { this.state && this.state.commands ?
+                            this.state.commands['finished'].map( command => {
+                                return <Command key={command.id} command={command}/>
+                            })
+                            : 'the commands are loading...'
+                        }
+                    </div>
                     
                     
                 </div>

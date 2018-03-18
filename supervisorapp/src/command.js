@@ -14,7 +14,7 @@ class Command extends Component {
           {this.props.command.preparator ?
             <Chip  className='chip' 
               label={this.props.command.preparator.firstname + ' ' +  this.props.command.preparator.lastname} />
-            : <span> pas encore assigné </span>}
+            : <span> _ </span>}
         </div>
 
         <div className='command-box-body'>

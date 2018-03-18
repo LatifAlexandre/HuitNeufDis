@@ -1,0 +1,5 @@
+.cmd-waiting, .cmd-in-progress, .cmd-end {
+    max-height: 30vh;
+    overflow-y: scroll;
+    display: flex;
+}
